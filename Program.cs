@@ -32,23 +32,13 @@ namespace TicTacToe_HW2
 
             bool winner = false;
             string player = user1;
-            int turnCount = 0;
 
             /** Play Game **/
             while (!winner)
             {
                 DisplayBoard(gameBoard);
-                player = PlayerTurn(player, user1, user2, gameBoard);
-
-                turnCount++;
-
-                if (turnCount >= 5)
-                {
-                    winner = WinConditions(gameBoard);
-                }
+                winner = PlayerTurn(player, user1, user2, gameBoard);
             }
-
-            Console.WriteLine($"{player} WINS!!!");
 
         }
 
@@ -79,38 +69,45 @@ namespace TicTacToe_HW2
         }
 
         /* Method for user turn */
-        public static string PlayerTurn(string player, string user1, string user2, string[] gameBoard)
+        public static bool PlayerTurn(string player, string user1, string user2, string[] gameBoard)
         {
             int userMove;
-            bool valid = true;
+            bool valid;
+            bool winner = false;
+            int turnCount = 0;
 
             Console.WriteLine($"{player}, where would you like to move?");
             userMove = int.Parse(Console.ReadLine());
 
-            valid = Validation(userMove, gameBoard, player, user1, valid);
+            valid = Validation(userMove, gameBoard, player, user1);
 
-            if (valid)
+            if (turnCount >= 5)
+            {
+                winner = WinConditions(gameBoard);
+            }
+
+            if (valid && !winner)
             {
                 /* Switch player */
                 player = player == user1 ? user2 : user1;
                 Console.Clear();
             }
-            else
+            else if (!valid && !winner)
             {
                 Console.WriteLine("Sorry, that's not a valid choice.");
                 Console.ReadLine();
                 Console.Clear();
             }
 
-            return player;
+            return winner;
 
         }
 
         /* Method for checking validity and assigning userMove to array */
         public static bool Validation(int userMove, string[] gameBoard,
-            string user1, string player, bool valid)
+            string user1, string player)
         {
-
+            bool valid = true;
             string xo = player == user1 ? "X" : "O";
 
             //Need to check userMove data type
