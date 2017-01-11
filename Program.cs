@@ -9,8 +9,8 @@ namespace TicTacToe_HW2
     class Program
     {
         /*static string user1;
-        string user2;
-        string player;*/
+        static string user2;
+        static string player;*/
 
         static void Main(string[] args)
         {
@@ -30,31 +30,25 @@ namespace TicTacToe_HW2
             /** Create Game Board Array **/
             string[] gameBoard = { "0", "1", "2", "3", "4", "5", "6", "7", "8" };
 
-            bool continueGame = true;
+            bool winner = false;
             string player = user1;
             int turnCount = 0;
 
             /** Play Game **/
-            while (continueGame)
+            while (!winner)
             {
                 DisplayBoard(gameBoard);
                 player = PlayerTurn(player, user1, user2, gameBoard);
 
                 turnCount++;
 
-                if (turnCount <= 5)
+                if (turnCount >= 5)
                 {
-                    continueGame = WinConditions(gameBoard);
+                    winner = WinConditions(gameBoard);
                 }
             }
 
-            /** Check to see if users still want to play **/
-            Console.WriteLine("Would you like to continue? (Y/N)");
-            string userYN = Console.ReadLine();
-            if (userYN.ToLower() != "y")
-            {
-                continueGame = false;
-            }
+            Console.WriteLine($"{player} WINS!!!");
 
         }
 
@@ -121,7 +115,7 @@ namespace TicTacToe_HW2
 
             //Need to check userMove data type
 
-            if (userMove > 0 && userMove <= 8)
+            if (userMove >= 0 && userMove <= 8)
             {
                 if (gameBoard[userMove] != "X" && gameBoard[userMove] != "O")
                 {
@@ -145,43 +139,56 @@ namespace TicTacToe_HW2
         public static bool WinConditions(string[] gameBoard)
         {
             int i;
-            bool noWin = true;
+            bool keepChecking = true;
+            bool winner = false;
 
-            while (noWin)
+            while (keepChecking)
             {
                 /* Check for vertical wins */
                 for (i = 0; i < 3; i++)
                 {
                     if (gameBoard[i] == gameBoard[i + 3] && gameBoard[i] == gameBoard[i + 6])
                     {
-                        noWin = false;
-                    }
-                }
-
-                /* Check for a horizontal wins */
-                for (i = 0; i < 3; i++)
-                {
-                    if (gameBoard[i] == gameBoard[i + 1] && gameBoard[i] == gameBoard[i + 1])
-                    {
-                        noWin = false;
-                    }
-                }
-
-                /* Check for a diagonal wins */
-                for (i = 0; i < 3; i++)
-                {
-                    if (gameBoard[i] == gameBoard[i + 4] && gameBoard[i] == gameBoard[i + 8])
-                    {
-                        noWin = false;
-                    }
-                    else if (gameBoard[i + 2] == gameBoard[i + 4] && gameBoard[i] == gameBoard[i + 6])
-                    {
-                        noWin = false;
+                        winner = true;
+                        keepChecking = false;
+                        i = 3;
                     }
                 }
             }
 
-            return noWin;
+            while (keepChecking)
+            {
+                /* Check for horizontal wins */
+                for (i = 0; i < 3; i++)
+                {
+                    if (gameBoard[i] == gameBoard[i + 1] && gameBoard[i] == gameBoard[i + 1])
+                    {
+                        winner = true;
+                        keepChecking = false;
+                        i = 3;
+                    }
+                }
+            }
+
+            while (keepChecking)
+            {
+                /* Check for diagonal wins */
+                for (i = 0; i < 3; i++)
+                {
+                    if (gameBoard[i] == gameBoard[i + 4] && gameBoard[i] == gameBoard[i + 8])
+                    {
+                        winner = true;
+                        keepChecking = false;
+                    }
+                    else if (gameBoard[i + 2] == gameBoard[i + 4] && gameBoard[i] == gameBoard[i + 6])
+                    {
+                        winner = true;
+                        keepChecking = false;
+                    }
+                }
+            }
+            
+            return winner;
 
         }
 
