@@ -10,7 +10,7 @@ namespace TicTacToe_HW2
     {
         /*static string user1;
         static string user2;
-        static string player;*/
+        static string[] gameBoard*/
 
         static void Main(string[] args)
         {
@@ -75,6 +75,12 @@ namespace TicTacToe_HW2
             bool valid;
             bool winner = false;
             int turnCount = 0;
+            //string player;
+
+            //if (turnCount == 0)
+            //{
+            //    player = user1;
+            //}
 
             Console.WriteLine($"{player}, where would you like to move?");
             userMove = int.Parse(Console.ReadLine());
