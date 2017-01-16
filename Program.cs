@@ -146,51 +146,63 @@ namespace TicTacToe_HW2
         /** Method for checking win conditions **/
         public static void WinConditions()
         {
-            int i = 0;
             bool keepChecking = true;
 
             while (keepChecking)
             {
-                /* Check for vertical wins */
-                if (gameBoard[i] == gameBoard[i + 3] && gameBoard[i] == gameBoard[i + 6])
-                {
-                    winner = player == user1 ? 1 : 2;
-                    keepChecking = false;
-                }
-
                 /* Check for horizontal wins */
-                else if (gameBoard[i] == gameBoard[i + 1] && gameBoard[i] == gameBoard[i + 1])
+                for (int i = 0; i < 9; i += 3)
                 {
-                    winner = player == user1 ? 1 : 2;
-                    keepChecking = false;
+                    if (gameBoard[i] == gameBoard[i + 1] && gameBoard[i] == gameBoard[i + 2])
+                    {
+                        winner = player == user1 ? 1 : 2;
+                        keepChecking = false;
+                        break;
+                    }
                 }
 
-                /* Check for diagonal wins */
-                else if (gameBoard[i] == gameBoard[i + 4] && gameBoard[i] == gameBoard[i + 8])
+                /* Check for vertical wins */
+                for (int i = 0; i < 3; i += 1)
                 {
-                    winner = player == user1 ? 1 : 2;
-                    keepChecking = false;
+                    if (gameBoard[i] == gameBoard[i + 3] && gameBoard[i] == gameBoard[i + 6])
+                    {
+                        winner = player == user1 ? 1 : 2;
+                        keepChecking = false;
+                        break;
+                    }
                 }
-                else if (gameBoard[i + 2] == gameBoard[i + 4] && gameBoard[i] == gameBoard[i + 6])
+
+                /* Check for diagonal win L-R */
+                if (gameBoard[0] == gameBoard[4] && gameBoard[0] == gameBoard[8])
                 {
                     winner = player == user1 ? 1 : 2;
                     keepChecking = false;
+                    break;
+                }
+                /* Check for diagonal win R-L */
+                else if (gameBoard[2] == gameBoard[4] && gameBoard[2] == gameBoard[6])
+                {
+                    winner = player == user1 ? 1 : 2;
+                    keepChecking = false;
+                    break;
                 }
 
                 /* Check for a tie */
-                else if (turnCount == 9)
+                if (turnCount == 9 && winner == 0)
                 {
-                    for (i = 0; i < 9; i++)
+                    for (int i = 0; i < 9; i++)
                     {
                         if (gameBoard[i] == "X" || gameBoard[i] == "O")
                         {
                             winner = 3;
                             keepChecking = false;
+                            break;
                         }
                         else
                         {
                             winner = 0;
                             keepChecking = false;
+                            break;
                         }
                     }
                 }
