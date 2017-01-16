@@ -18,8 +18,32 @@ namespace TicTacToe_HW2
 
         static void Main(string[] args)
         {
+            GetUserNames();
 
-            /** Get user names, assign to X or O **/
+            while (winner == 0)
+            {
+                DisplayBoard();
+                PlayerTurn();
+            }
+
+            if (winner == 1 || winner == 2)
+            {
+                Console.Clear();
+                DisplayBoard();
+                Console.WriteLine($"{player} WINS!!!");
+            }
+            else
+            {
+                Console.Clear();
+                DisplayBoard();
+                Console.WriteLine("It's a draw!");
+            }
+
+        }
+
+        /** Get user names, assign to X or O **/
+        public static void GetUserNames()
+        {
             Console.WriteLine("User 1, what is your name? ");
             user1 = Console.ReadLine().ToUpper();
             Console.WriteLine($"{user1} you will be Xs.");
@@ -32,35 +56,14 @@ namespace TicTacToe_HW2
             Console.Clear();
 
             player = user1;
-
-            /** Play Game **/
-            while (winner == 0)
-            {
-                DisplayBoard();
-                winner = PlayerTurn();
-            }
-
-            if (winner != 3)
-            {
-                Console.Clear();
-                DisplayBoard();
-                Console.WriteLine($"{player} WINS!!!");
-            }
-            else
-            {
-                Console.Clear();
-                DisplayBoard();
-                Console.WriteLine("It's a draw!");
-            }
         }
 
         /** Method for displaying Game Board **/
         public static void DisplayBoard()
         {
-
             int counter = 0;
 
-            Console.WriteLine("");
+            Console.WriteLine("\n");
 
             foreach (var space in gameBoard)
             {
@@ -76,12 +79,11 @@ namespace TicTacToe_HW2
                 }
             }
 
-            Console.WriteLine("");
-            Console.WriteLine("");
+            Console.WriteLine("\n");
         }
 
         /* Method for user turn */
-        public static int PlayerTurn()
+        public static void PlayerTurn()
         {
             int userMove;
             bool valid;
@@ -92,9 +94,11 @@ namespace TicTacToe_HW2
             userMove = int.Parse(Console.ReadLine());
 
             valid = Validation(userMove);
-            Console.WriteLine(gameBoard[2] + gameBoard[4] + gameBoard[6]);
-            
-            winner = WinConditions();
+
+            if (turnCount > 4)
+            {
+                WinConditions();
+            }
 
             if (valid && winner == 0)
             {
@@ -108,8 +112,6 @@ namespace TicTacToe_HW2
                 Console.ReadLine();
                 Console.Clear();
             }
-
-            return winner;
 
         }
 
@@ -142,7 +144,7 @@ namespace TicTacToe_HW2
 
 
         /** Method for checking win conditions **/
-        public static int WinConditions()
+        public static void WinConditions()
         {
             int i = 0;
             bool keepChecking = true;
@@ -150,7 +152,6 @@ namespace TicTacToe_HW2
             while (keepChecking)
             {
                 /* Check for vertical wins */
-
                 if (gameBoard[i] == gameBoard[i + 3] && gameBoard[i] == gameBoard[i + 6])
                 {
                     winner = player == user1 ? 1 : 2;
@@ -158,7 +159,6 @@ namespace TicTacToe_HW2
                 }
 
                 /* Check for horizontal wins */
-
                 else if (gameBoard[i] == gameBoard[i + 1] && gameBoard[i] == gameBoard[i + 1])
                 {
                     winner = player == user1 ? 1 : 2;
@@ -166,7 +166,6 @@ namespace TicTacToe_HW2
                 }
 
                 /* Check for diagonal wins */
-
                 else if (gameBoard[i] == gameBoard[i + 4] && gameBoard[i] == gameBoard[i + 8])
                 {
                     winner = player == user1 ? 1 : 2;
@@ -199,13 +198,7 @@ namespace TicTacToe_HW2
                 keepChecking = false;
 
             }
-
-            return winner;
-
         }
-
-
-
     }
 
 }
